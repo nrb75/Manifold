@@ -5,7 +5,7 @@ Task: identify frequently occuring apps, so we can schedule them on the same ser
 Methods: 
 
 Apriori Algorithm
-1. Seth threshold for evaluation
+1. Set threshold for evaluation
 2. Identify frequentest itemsets that satisfy minimum thershold set above
 
 After frequentest itemsets are identified use assocation rule mining
