@@ -13,7 +13,7 @@ Methods:
 FP-Growth Algorithm
 -Condensed version of Apriorir. Does not create all set lists and then assign thresholds, but builds a tree based on frequency of occurance and keeps the ones that pass your threshold.
 
-Apriori Algorithm
+The Apriori Algorithm notebooks were for testing, and are not in use. This method works the same as FP, but is slower.
 1. Set threshold for evaluation
 2. Identify frequentest itemsets that satisfy minimum thershold set above
 After frequentest itemsets are identified use assocation rule mining
