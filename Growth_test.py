@@ -145,7 +145,7 @@ rules_df_80per_70con_all=format_rules(rules80, df, 20)
 
 #test that the rule lenght is as expected
 
-def server_association(rules_df, apps_server):
+def server_association(rules_df, df_orig, apps_server):
     from collections import defaultdict
     serverlist=[]
     server={}
@@ -188,7 +188,7 @@ def server_association(rules_df, apps_server):
     server_rules=server_rules[['IP', 'serverid']]
 
 #merge in the serverid
-    df_servers=df.merge(server_rules, left_on='Src_IP', right_on='IP', how='left')
+    df_servers=df_orig.merge(server_rules, left_on='Src_IP', right_on='IP', how='left')
     df_servers=df_servers.rename(columns={'serverid': 'Src_Server'})
     df_servers=df_servers.merge(server_rules, left_on='Dst_IP', right_on='IP', how='left')
     df_servers=df_servers.rename(columns={'serverid': 'Dst_Server'})
@@ -200,6 +200,9 @@ def server_association(rules_df, apps_server):
     return [server_rules, df_servers['Duration'].sum(), df_servers['duration_pred'].sum(), df_servers['Duration'].mean(), df_servers['duration_pred'].mean()]
     #the total time based on our new model
     
-server_assignments80_all, total_latency_all, total_latency80_all, avg_latency_all, avg_latency80_all = server_association(rules_df_80per_70con, 20)
+server_assignments80_all, total_latency_all, total_latency80_all, avg_latency_all, avg_latency80_all = server_association(rules_df_80per_70con, df, 20)
 
+
+print(total_latency_all)
+print(total_latency80_all)
 #server_assignments40, total_latency40 = server_association(rules_df_40per_70con, 20)
