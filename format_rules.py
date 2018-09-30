@@ -68,8 +68,8 @@ def format_rules(rules, orig_df,apps_server):
     #start by assigning the most important pair to a server
     rules_df['server_A']=None
     rules_df['server_B']=None
-    rules_df['server_A'].iloc[0]=0
-    rules_df['server_B'].iloc[0]=0
+    rules_df.loc[rules_df['pair_ID']==0, 'server_A'] = 0
+    rules_df.loc[rules_df['pair_ID']==0, 'server_B'] = 0
     
     #assign these servers to the pairs in our rules dataframe. Again this is stupid as we are not considering individual IPs that may repeat in different pairs. but it's a start
     rules_df['server']=servers_rule_list
