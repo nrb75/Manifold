@@ -14,7 +14,6 @@ Created on Sun Sep 30 08:42:59 2018
 #this output of the rules dataframe is an input here
 
 def format_rules(rules, orig_df,apps_server): 
-    
     import pandas as pd
     import numpy as np
     #Convert the Dictionary format into a dataframe
@@ -74,7 +73,6 @@ def format_rules(rules, orig_df,apps_server):
     #assign these servers to the pairs in our rules dataframe. Again this is stupid as we are not considering individual IPs that may repeat in different pairs. but it's a start
     rules_df['server']=servers_rule_list
     rules_df.index=range(0, len(rules_df))#need to reset index
-    #export rules_df
-    #rules_df.to_csv('rules_df.csv')
+
 
     return(rules_df)
