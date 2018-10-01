@@ -6,7 +6,7 @@ Created on Sat Sep 29 16:23:33 2018
 @author: natalie
 """
 
-#import boto3
+import boto3
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,12 +14,16 @@ from mlxtend.preprocessing import TransactionEncoder
 import random
 from mlxtend.frequent_patterns import apriori
 import pyfpgrowth
+from io import BytesIO
 
 #load data
-df=pd.read_csv('/home/natalie/Documents/Manifold/df_test.csv')
+#df=pd.read_csv('/home/natalie/Documents/Manifold/df_test.csv')
+client = boto3.client('s3')
+obj = client.get_object(Bucket='manifolddata', Key='week1.csv')
+df = pd.read_csv(BytesIO(obj['Body'].read()), low_memory=False)
 
-#df=df.iloc[:,[0,1,3,4,5,6,7,8]]
-#df.columns=['Date', 'Duration', 'Src_IP', 'Src_pt', 'Dst_IP', 'Dst_pt','Packets', 'Bytes']
+df=df.iloc[:,[0,1,3,4,5,6,7,8]]
+df.columns=['Date', 'Duration', 'Src_IP', 'Src_pt', 'Dst_IP', 'Dst_pt','Packets', 'Bytes']
 #add an date column that is rounded to nearest hour, so we can use this as a timestep to see how frequently IP pairs occur in each timestep
 df['Date']=pd.to_datetime(df['Date'], format="%Y-%m-%d %H:%M:%S.%f", errors = 'coerce')
 df['date_hr']=pd.Series(df['Date']).dt.round("H")
@@ -131,8 +135,8 @@ rules_df['pair_ID']=range(0, len(rules_df))
     #start by assigning the most important pair to a server
 rules_df['server_A']=None
 rules_df['server_B']=None
-rules_df['server_A'].iloc[0]=0
-rules_df['server_B'].iloc[0]=0
+rules_df.loc[rules_df['pair_ID']==0, 'server_A'] = 0
+rules_df.loc[rules_df['pair_ID']==0, 'server_B'] = 0
     
     #assign these servers to the pairs in our rules dataframe. Again this is stupid as we are not considering individual IPs that may repeat in different pairs. but it's a start
 rules_df['server']=servers_rule_list
@@ -141,7 +145,7 @@ rules_df['server']=servers_rule_list
 
 
 #rules_df_40per_70con=format_rules(rules40, df, 20)
-rules_df_80per_70con_all=rules_df
+rules_df_80per_70con=rules_df
 
 #test that the rule lenght is as expected
 
@@ -180,12 +184,17 @@ for i in range(0,len(rules_df)):
         server[rules_df['IP_B'][i]]=serverid
         ips[rules_df['IP_A'][i]]=1
         ips[rules_df['IP_B'][i]]=1
+    if server not in serverlist:
+        serverlist.append(server)
+     #if last server is not full, we still want to append it to the serverlist           
+        
 
-server_df=pd.DataFrame.from_records(serverlist)        
-server_rules=server_df.transpose()
-server_rules['serverid']=server_rules.min(axis=1) #makes a new column with the serverid, which is the only non na value in the row
-server_rules['IP']=server_rules.index
-server_rules=server_rules[['IP', 'serverid']]
+server_df=pd.DataFrame.from_records(serverlist) 
+server_dft=server_df.transpose()
+server_dft['serverid']=server_dft.min(axis=1)
+server_dft['IP']=server_dft.index
+server_dft=server_dft[['IP', 'serverid']]
+server_rules=server_dft #something is wrong with server_rules, the serverids do not match jupyter
 
 #merge in the serverid
 df_servers=df.merge(server_rules, left_on='Src_IP', right_on='IP', how='left')
@@ -195,7 +204,7 @@ df_servers=df_servers.rename(columns={'serverid': 'Dst_Server'})
 df_servers=df_servers.drop(['IP_x', 'IP_y'], axis=1)
 
 df_servers['duration_pred']=df_servers['Duration']
-df_servers['duration_pred'][df_servers['Src_Server']==df_servers['Dst_Server']]=0
+df_servers.loc[df_servers['Src_Server']==df_servers['Dst_Server'], 'duration_pred']=0
 
  
 server_assignments80=server_rules
@@ -204,6 +213,7 @@ total_latency80=df_servers['duration_pred'].sum()
 avg_latency=df_servers['Duration'].mean()
 avg_latency80 = df_servers['duration_pred'].mean()
 
+print(rules_df[['IP_A', 'IP_B', 'latency_rank']].head(15)) #this matches jupyter
 print('len of rules_df_80per_70con is ' + str(len(rules_df_80per_70con)))#should get same length as the rules 351
 print('len of server rules is ' + str(len(server_rules))) #should get same 351
 print('len of df_servers ' + str(len(df_servers)))#should be dataframe length
