@@ -73,7 +73,8 @@ def format_rules(rules, orig_df,apps_server):
     
     #assign these servers to the pairs in our rules dataframe. Again this is stupid as we are not considering individual IPs that may repeat in different pairs. but it's a start
     rules_df['server']=servers_rule_list
+    rules_df.index=range(0, len(rules_df))#need to reset index
     #export rules_df
-    rules_df.to_csv('rules_df.csv')
+    #rules_df.to_csv('rules_df.csv')
 
     return(rules_df)
