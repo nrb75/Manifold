@@ -65,4 +65,3 @@ def server_association(rules_df, df_orig, apps_server):
     return [server_rules, df_servers['Duration'].sum(), df_servers['duration_pred'].sum(), df_servers['Duration'].mean(), df_servers['duration_pred'].mean()]
     #the total time based on our new model
     
-server_rules80, total_latency, total_latency80, avg_latency, avg_latency80 = server_association(rules_df_80per_70con, df, 20)
