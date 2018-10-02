@@ -22,12 +22,11 @@ def hourly_step_output(df, percentile, confidence, apps_server):
 
     data_groups=[]
 
-    for i in range(0,25):
+    for i in range(0,df['hour'].nunique()):
         data=df[df['hour']==i]
         data_groups.append(data)
     
     pairs_list=[]
-    data_l_list=[]
     patterns_list=[]
     rules_list=[]
 
@@ -71,7 +70,7 @@ def hourly_step_output(df, percentile, confidence, apps_server):
 
 
 #bring together all the durations for the actual data and the model
-    hours=range(0,24)
+    hours=range(0,df['hour'].nunique())
     model_output=pd.DataFrame({'hours':hours,'total_latency_list': total_latency_list, 'total_latency_model_list': total_latency_model_list, 'avg_latency_list': avg_latency_list, 'avg_latency_model_list': avg_latency_model_list})
     model_output.columns=['hours', 'total_latency', 'total_latency_model', 'avg_latency', 'avg_latency_model']
     model_output['avg_latency_per_reduction']=((model_output['avg_latency']-model_output['avg_latency_model'])/model_output['avg_latency'])*100
