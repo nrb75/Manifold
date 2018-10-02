@@ -62,6 +62,6 @@ def server_association(rules_df, df_orig, apps_server):
     df_servers['duration_pred']=df_servers['Duration']
     df_servers.loc[df_servers['Src_Server']==df_servers['Dst_Server'], 'duration_pred']=0
 
-    return [server_rules, df_servers['Duration'].sum(), df_servers['duration_pred'].sum(), df_servers['Duration'].mean(), df_servers['duration_pred'].mean()]
+    return [df_servers, server_rules, df_servers['Duration'].sum(), df_servers['duration_pred'].sum(), df_servers['Duration'].mean(), df_servers['duration_pred'].mean()]
     #the total time based on our new model
     
