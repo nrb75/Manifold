@@ -45,7 +45,7 @@ def hourly_step_output(df, percentile, confidence, apps_server):
     
     #format the rules, bring back in the other info on latency rank
     while {} in rules_list:
-    rules_list.remove({})#lremove empty items if they have less than 24 hours
+        rules_list.remove({})#lremove empty items if they have less than 24 hours
     formated_rules=[]
 
     for i in rules_list:
