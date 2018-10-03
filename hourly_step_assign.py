@@ -53,6 +53,7 @@ def hourly_step_output(df, percentile, confidence, apps_server):
 
     
     #assign IPs to the servers at each hour
+    server_df_list=[]
     server_assign_list=[]
     total_latency_list=[]
     total_latency_model_list=[]
@@ -68,6 +69,7 @@ def hourly_step_output(df, percentile, confidence, apps_server):
     
     for i, j in zip(formated_rules, data_groups_test) :
         server_df, server_assignments, total_latency, total_latency_model, avg_latency, avg_latency_model = server_association(i, j, apps_server) #this function loaded fr
+        server_df_list.append(server_df)
         server_assign_list.append(server_assignments)
         total_latency_list.append(total_latency)
         total_latency_model_list.append(total_latency_model)
@@ -82,5 +84,5 @@ def hourly_step_output(df, percentile, confidence, apps_server):
     model_output['avg_latency_per_reduction']=((model_output['avg_latency']-model_output['avg_latency_model'])/model_output['avg_latency'])*100
 
     #return(formated_rules)
-    return(server_assign_list, model_output , model_output['total_latency'].sum(), model_output['total_latency_model'].sum(), model_output['avg_latency'].mean(), model_output['avg_latency_model'].mean())  
+    return(server_df_list, server_assign_list, model_output , model_output['total_latency'].sum(), model_output['total_latency_model'].sum(), model_output['avg_latency'].mean(), model_output['avg_latency_model'].mean())  
   
