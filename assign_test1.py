@@ -17,7 +17,7 @@ from format_rules import format_rules
 
 def assign_servers_output(df_train, df_test, percentile, confidence, apps_server):
     df_train['hour']=None
-    df_train['hour']=pd.DatetimeIndex(df['Date']).hour
+    df_train['hour']=pd.DatetimeIndex(df_train['Date']).hour
 
       
     data_l=list(df_train['pairs'])
