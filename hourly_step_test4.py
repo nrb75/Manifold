@@ -82,5 +82,5 @@ def hourly_step_test_output(df_train, df_test, percentile, confidence, apps_serv
     model_output['avg_latency_per_reduction']=((model_output['avg_latency']-model_output['avg_latency_model'])/model_output['avg_latency'])*100
 
     #return(formated_rules)
-    return(model_output , model_output['total_latency'].sum(), model_output['total_latency_model'].sum(), model_output['avg_latency'].mean(), model_output['avg_latency_model'].mean())  
+    return(server_assign_list, model_output , model_output['total_latency'].sum(), model_output['total_latency_model'].sum(), model_output['avg_latency'].mean(), model_output['avg_latency_model'].mean())  
   
