@@ -38,5 +38,5 @@ def assign_servers_output(df, percentile, confidence, apps_server):
     server_df, server_assignments, total_latency, total_latency_model, avg_latency, avg_latency_model = server_association(formated_rules, df, apps_server) #this function loaded fr
 
     #return(formated_rules)
-    return(server_assignments, total_latency, total_latency_model, avg_latency, avg_latency_model)  
+    return(server_df, server_assignments, total_latency, total_latency_model, avg_latency, avg_latency_model)  
   
