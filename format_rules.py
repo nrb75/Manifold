@@ -13,6 +13,9 @@ Created on Sun Sep 30 08:42:59 2018
 
 #this output of the rules dataframe is an input here
 
+#Bring in the frequency of each rule and sum of the normalized latency. Use these metrics to prioritize the rules we will implement. There is always a tradeoff withh implementing more rules, so we want to be efficient.
+
+
 def format_rules(rules, orig_df,apps_server): 
     import pandas as pd
     import numpy as np

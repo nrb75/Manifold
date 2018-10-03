@@ -6,6 +6,11 @@ Created on Mon Oct  1 07:32:51 2018
 @author: natalie
 """
 
+#after the rules are generated and formtted, we now want to assign apps to specific servers
+#this function is a simple way to assign high priority apps to specific servers. Rank is determined based on frequency and normalized latency time.
+#normalized latency time was calculated as sum of duration for that pair in the entire dataset / total packets for that pair in the dataset
+
+
 def server_association(rules_df, df_orig, apps_server):
     import pandas as pd
     from collections import defaultdict

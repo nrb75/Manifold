@@ -6,6 +6,8 @@ Created on Tue Oct  2 18:02:38 2018
 @author: natalie
 """
 
+#this function takes a training dataset and a test dataset, defined by the user, and performs the frequent pattern algorithm.
+#the output is the actual data contrasted with the modeled data for the testing period.
 
 import pandas as pd
 import pyfpgrowth

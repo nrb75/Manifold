@@ -6,25 +6,20 @@ Created on Tue Oct  2 18:02:38 2018
 @author: natalie
 """
 
-#this funcion assigns apps to specific servers for each of the 24 hours in the day.
-#we think that daily patterns may help us better locate apps.
-#this loops through each chunk of data that is within the specific hour [0-23], and performs the FP algorithm.
-#it outputs the server assignments for each hour, and the latency associated with each hour.
-
 
 import pandas as pd
 import pyfpgrowth
 from Server_Assign import server_association
 from format_rules import format_rules
 
-#df=pd.read_csv('/home/natalie/Documents/Manifold/df_test.csv')
+#this function assigns servers to apps that are important and have rules created for them.
+#rules were created with frequent pattern algorithm, then ranked.
 
 
-def assign_servers_hourly(df, percentile, confidence, apps_server):
+def hourly_step_output(df, percentile, confidence, apps_server):
     df['hour']=None
     df['hour']=pd.DatetimeIndex(df['Date']).hour
 
-      
     data_groups=[]
 
     for i in range(0, df['hour'].nunique()):
@@ -67,7 +62,7 @@ def assign_servers_hourly(df, percentile, confidence, apps_server):
 #now we use the training model on the unseen test data
     data_groups_test=[]
     for i in range(0,df['hour'].nunique()):
-        data=df_test[df['hour']==i]
+        data=df[df['hour']==i]
         data_groups_test.append(data)
     
     

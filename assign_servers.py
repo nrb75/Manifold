@@ -12,7 +12,8 @@ import pyfpgrowth
 from Server_Assign import server_association
 from format_rules import format_rules
 
-#df=pd.read_csv('/home/natalie/Documents/Manifold/df_test.csv')
+#this function assigns servers to apps based on the rules outlined in the "server_assign.py" and "format_rules.py"
+
 
 
 def assign_servers_output(df, percentile, confidence, apps_server):
