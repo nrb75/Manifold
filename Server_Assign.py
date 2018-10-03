@@ -69,4 +69,10 @@ def server_association(rules_df, df_orig, apps_server):
 
     return [df_servers, server_rules, df_servers['Duration'].sum(), df_servers['duration_pred'].sum(), df_servers['Duration'].mean(), df_servers['duration_pred'].mean()]
     #the total time based on our new model
+    #dataframe with servers assigned
+    #each app with the assigned server that had a rule
+    #total latency time for the data
+    #total latency time predicted by model
+    #avg transaction time for the data
+    #avg transaction time for the model
     
