@@ -60,7 +60,7 @@ def hourly_step_test_output(df_train, df_test, percentile, confidence, apps_serv
     avg_latency_model_list=[]
 
 #now we use the training model on the unseen test data
-    
+    data_groups_test=[]
     for i in range(0,df_test['hour'].nunique()):
         data=df_test[df_test['hour']==i]
         data_groups_test.append(data)
