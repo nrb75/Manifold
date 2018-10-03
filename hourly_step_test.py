@@ -16,13 +16,13 @@ from format_rules import format_rules
 #df=pd.read_csv('/home/natalie/Documents/Manifold/df_test.csv')
 
 
-def hourly_step_output(df_train, df_test, percentile, confidence, apps_server):
+def hourly_step_test_output(df_train, df_test, percentile, confidence, apps_server):
     df_train['hour']=None
     df_train['hour']=pd.DatetimeIndex(df_train['Date']).hour
 
     data_groups=[]
 
-    for i in range(0,df['hour'].nunique()):
+    for i in range(0, df_train['hour'].nunique()):
         data=df_train[df_train['hour']==i]
         data_groups.append(data)
     
@@ -48,7 +48,7 @@ def hourly_step_output(df_train, df_test, percentile, confidence, apps_server):
     formated_rules=[]
 
     for i in rules_list:
-        formatrule=format_rules(i, df, apps_server)
+        formatrule=format_rules(i, df_train, apps_server)
         formated_rules.append(formatrule)
 
     
