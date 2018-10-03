@@ -47,34 +47,34 @@ def hourly_step_output(df, percentile, confidence, apps_server):
         rules_list.remove({})#lremove empty items if they have less than 24 hours
     formated_rules=[]
 
-    #for i in rules_list:
-      #  formatrule=format_rules(i, df, apps_server)
-      #  formated_rules.append(formatrule)
+    for i in rules_list:
+        formatrule=format_rules(i, df, apps_server)
+        formated_rules.append(formatrule)
 
     
     #assign IPs to the servers at each hour
-    #server_assign_list=[]
-    #total_latency_list=[]
-    #total_latency_model_list=[]
-    #avg_latency_list=[]
-   # avg_latency_model_list=[]
+    server_assign_list=[]
+    total_latency_list=[]
+    total_latency_model_list=[]
+    avg_latency_list=[]
+    avg_latency_model_list=[]
 
 
-    #for i, j in zip(formated_rules, data_groups) :
-       #server_df, server_assignments, total_latency, total_latency_model, avg_latency, avg_latency_model = server_association(i, j, apps_server) #this function loaded fr
-        #server_assign_list.append(server_assignments)
-        #total_latency_list.append(total_latency)
-        #total_latency_model_list.append(total_latency_model)
-        #avg_latency_list.append(avg_latency)
-        #avg_latency_model_list.append(avg_latency_model)
+    for i, j in zip(formated_rules, data_groups) :
+        server_df, server_assignments, total_latency, total_latency_model, avg_latency, avg_latency_model = server_association(i, j, apps_server) #this function loaded fr
+        server_assign_list.append(server_assignments)
+        total_latency_list.append(total_latency)
+        total_latency_model_list.append(total_latency_model)
+        avg_latency_list.append(avg_latency)
+        avg_latency_model_list.append(avg_latency_model)
 
 
 #bring together all the durations for the actual data and the model
-    #hours=range(0,df['hour'].nunique())
-    #model_output=pd.DataFrame({'hours':hours,'total_latency_list': total_latency_list, 'total_latency_model_list': total_latency_model_list, 'avg_latency_list': avg_latency_list, 'avg_latency_model_list': avg_latency_model_list})
-    #model_output.columns=['hours', 'total_latency', 'total_latency_model', 'avg_latency', 'avg_latency_model']
-    #model_output['avg_latency_per_reduction']=((model_output['avg_latency']-model_output['avg_latency_model'])/model_output['avg_latency'])*100
+    hours=range(0,df['hour'].nunique())
+    model_output=pd.DataFrame({'hours':hours,'total_latency_list': total_latency_list, 'total_latency_model_list': total_latency_model_list, 'avg_latency_list': avg_latency_list, 'avg_latency_model_list': avg_latency_model_list})
+    model_output.columns=['hours', 'total_latency', 'total_latency_model', 'avg_latency', 'avg_latency_model']
+    model_output['avg_latency_per_reduction']=((model_output['avg_latency']-model_output['avg_latency_model'])/model_output['avg_latency'])*100
 
-    return(rules_list)
-    #return(model_output , model_output['total_latency'].sum(), model_output['total_latency_model'].sum(), model_output['avg_latency'].mean(), model_output['avg_latency_model'].mean())  
+    #return(formated_rules)
+    return(model_output , model_output['total_latency'].sum(), model_output['total_latency_model'].sum(), model_output['avg_latency'].mean(), model_output['avg_latency_model'].mean())  
   
