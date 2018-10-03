@@ -76,7 +76,7 @@ def hourly_step_test_output(df_train, df_test, percentile, confidence, apps_serv
 
 
 #bring together all the durations for the actual data and the model
-    hours=range(0,df_train['hour'].nunique())
+    hours=range(0, df_train['hour'].nunique())
     model_output=pd.DataFrame({'hours':hours,'total_latency_list': total_latency_list, 'total_latency_model_list': total_latency_model_list, 'avg_latency_list': avg_latency_list, 'avg_latency_model_list': avg_latency_model_list})
     model_output.columns=['hours', 'total_latency', 'total_latency_model', 'avg_latency', 'avg_latency_model']
     model_output['avg_latency_per_reduction']=((model_output['avg_latency']-model_output['avg_latency_model'])/model_output['avg_latency'])*100
