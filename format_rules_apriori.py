@@ -18,7 +18,7 @@ def format_rules_apriori(rules, orig_df,apps_server):
     import pandas as pd
     import numpy as np
 
-    
+    rules.rename(columns={'item_A':'IP_A', 'item_B':'IP_B'}, inplace=True)
     rules['pairs']=list(zip(rules.IP_A, rules.IP_B))
     rules['pairs']=rules['pairs'].apply(sorted)
     

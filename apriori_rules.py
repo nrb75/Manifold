@@ -6,6 +6,14 @@ Created on Thu Oct  4 16:35:48 2018
 @author: natalie
 """
 
+from iter_apriori import freq
+from iter_apriori import order_count
+from iter_apriori import get_item_pairs
+from iter_apriori import merge_item_stats
+from iter_apriori import merge_item_name
+from itertools import combinations, groupby
+from collections import Counter
+
 def association_rules(order_item, min_support):
 
     print("Starting order_item: {:22d}".format(len(order_item)))

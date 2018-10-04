@@ -5,6 +5,9 @@ Created on Thu Oct  4 16:34:00 2018
 
 @author: natalie
 """
+import pandas as pd
+from itertools import combinations, groupby
+from collections import Counter
 
 #Returns frequency counts for items and item pairs
 def freq(iterable):

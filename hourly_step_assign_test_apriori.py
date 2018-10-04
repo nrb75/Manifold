@@ -28,37 +28,44 @@ def hourly_step_test_apriori_output(df_train, df_test, percentile, apps_server):
     df_test['hour']=None
     df_test['hour']=pd.DatetimeIndex(df_test['Date']).hour
     
-    data=df_train[['Date', 'Src_IP', 'Dst_IP']]
+    data=df_train[['hour', 'Src_IP', 'Dst_IP']]
     #melt 
     data_series=data
-    data_series=pd.melt(data_series, id_vars=['Date'])
+    data_series=pd.melt(data_series, id_vars=['hour'])
 
-    data_series['hour']=None
-    data_series['hour']=pd.DatetimeIndex(data_series['Date']).hour
-    data_series=data_series.drop('variable', axis=1)
+    #data_series['hour']=None
+    #data_series['hour']=pd.DatetimeIndex(data_series['Date']).hour
+    #data_series=data_series.drop('variable', axis=1)
+    data_series=data_series[['hour', 'value']]
+    data_series.columns=['hour', 'IP']
+    data_series = data_series.set_index('hour')['IP'].rename('IP')
     
     data_groups=[]
-
-    for i in range(0, data_series['hour'].nunique()):
-        data=data_series[data_series['hour']==i]
+    for i in range(0, data_series.index.nunique()):
+        data=data_series[data_series.index==i]
         data_groups.append(data)
+        
+    pair_groups=[]
+    for i in range(0, df_train['hour'].nunique()):
+        data=df_train[df_train['hour']==i]
+        pair_groups.append(data)
     
     pairs_list=[]
     patterns_list=[]
     rules_list=[]
     hours=[]
 
-    for i in data_groups:    
-        pairs_count=(i.groupby('pairs2').agg({'Date':'count', 'norm_latency': 'mean', 'Duration': 'sum', 'Packets':'sum'}).reset_index())
+    for i ,j in zip(data_groups, pair_groups):    
+        pairs_count=(j.groupby('pairs2').agg({'Date':'count', 'norm_latency': 'mean', 'Duration': 'sum', 'Packets':'sum'}).reset_index())
         pairs_count.columns=['pairs','frequency', 'avg_norm_latency', 'total_duration', 'total_packets']
         pairs_count['norm_latency']=(pairs_count['total_duration']/pairs_count['total_packets'].sum())*100 #sum of all duration time divided by sum of all packets transfered for that pair
         pairs_list.append(pairs_count)
         per_n=(pairs_count['frequency'].quantile(percentile))
         min_support=per_n/len(df_train) #wants this as a percentage
-        hour_group=data_groups['hour'][0]
+        hour_group=i.index[0]
         hours.append(hour_group)
-        data_series=data_series.drop('hour', axis=1)
-        rules = association_rules(data_series, min_support)  
+        #data_series=i.drop('hour', axis=1)
+        rules = association_rules(i, min_support)  
         rules_list.append(rules)
     
     #format the rules, bring back in the other info on latency rank
