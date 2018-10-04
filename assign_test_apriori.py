@@ -19,7 +19,7 @@ from format_rules_apriori import format_rules_apriori
 #df=pd.read_csv('/home/natalie/Documents/Manifold/df_test.csv')
 
 
-def assign_servers_output(df_train, df_test, percentile, confidence, apps_server):
+def assign_servers_output(df_train, df_test, percentile, apps_server):
     df_train['hour']=None
     df_train['hour']=pd.DatetimeIndex(df_train['Date']).hour
 
