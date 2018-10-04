@@ -28,16 +28,16 @@ def server_association_apriori(rules_df, df_orig, apps_server):
             server = defaultdict(list)
             serverid=serverid+1 #change the serverid when the previous one is full
     #if IP_B is in this server, it is a duplicate, so we only want to add in the IP_A which has not been added to the server yet
-        if (rules_df['item_B'][i] in server) or rules_df['item_B'][i] in ips and (len(server)<=(apps_server-1)) and (rules_df['IP_A'][i] not in ips):
+        if (rules_df['IP_B'][i] in server) or rules_df['IP_B'][i] in ips and (len(server)<=(apps_server-1)) and (rules_df['IP_A'][i] not in ips):
             server[rules_df['IP_A'][i]]=serverid
             ips[rules_df['IP_A'][i]]=1
     #if IP_B is not in the server, and the server has room for 2 more, and it's matching IP_A is also not in the ip list we know IP_A hasn't been added yet.
     #Thus, we need to add both the IP_A and IP_B in this row to this server and the ip list.
-        if (rules_df['item_B'][i] not in server) and len(server)<=(apps_server-2) and (rules_df['IP_A'][i] not in ips) and (rules_df['IP_B'][i] not in ips):
-            server[rules_df['item_A'][i]]=serverid
-            server[rules_df['item_B'][i]]=serverid
+        if (rules_df['IP_B'][i] not in server) and len(server)<=(apps_server-2) and (rules_df['IP_A'][i] not in ips) and (rules_df['IP_B'][i] not in ips):
+            server[rules_df['IP_A'][i]]=serverid
+            server[rules_df['IP_B'][i]]=serverid
             ips[rules_df['IP_A'][i]]=1
-            ips[rules_df['item_B'][i]]=1                                                                                                                                                                                                                          
+            ips[rules_df['IP_B'][i]]=1                                                                                                                                                                                                                          
    ##if IP_B is not in the server, and the server has room for only 1 more, and it's matching IP_A is also not in the ip list we know IP_A hasn't been added yet.
     #we need to create a new server, and add both the IP_A and IP_B in this row to this new server and the ip list.
         if (rules_df['item_B'][i] not in server) and len(server)==(apps_server-1) and (rules_df['IP_A'][i] not in ips) and (rules_df['IP_B'][i] not in ips): #if there is not enough room for the pair, we need to start a new server even if it is not full
@@ -45,9 +45,9 @@ def server_association_apriori(rules_df, df_orig, apps_server):
             server={}
             serverid=serverid+1
             server[rules_df['item_A'][i]]=serverid
-            server[rules_df['item_B'][i]]=serverid
+            server[rules_df['IP_B'][i]]=serverid
             ips[rules_df['IP_A'][i]]=1
-            ips[rules_df['item_B'][i]]=1
+            ips[rules_df['IP_B'][i]]=1
         if server not in serverlist and i==last:
             serverlist.append(server)
      #if last server is not full, we still want to append it to the serverlist   

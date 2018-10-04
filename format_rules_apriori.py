@@ -14,7 +14,7 @@ Created on Sun Sep 30 08:42:59 2018
 #Bring in the frequency of each rule and sum of the normalized latency. Use these metrics to prioritize the rules we will implement. There is always a tradeoff withh implementing more rules, so we want to be efficient.
 
 
-def format_rules(rules_df, orig_df,apps_server): 
+def format_rules_apriori(rules, orig_df,apps_server): 
     import pandas as pd
     import numpy as np
 
@@ -27,7 +27,7 @@ def format_rules(rules_df, orig_df,apps_server):
     pairs_count.columns=['pairs','frequency', 'avg_norm_latency', 'total_duration', 'total_packets']
     pairs_count['norm_latency']=(pairs_count['total_duration']/pairs_count['total_packets'].sum())*100 #sum of all duration time divided by sum of all packets transfered for that pair
     
-    rules_df=rules_df.merge(pairs_count, left_on='pairs2', right_on='pairs')
+    rules_df=rules.merge(pairs_count, left_on='pairs2', right_on='pairs')
     rules_df=rules_df.drop('pairs_y', axis=1)
     rules_df=rules_df.rename(columns={'pairs_x':'pairs'})
     rules_df['latency_rank']=rules_df['frequency']*rules_df['norm_latency']
