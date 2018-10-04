@@ -28,7 +28,7 @@ def hourly_step_test_apriori_output(df_train, df_test, percentile, apps_server):
     df_test['hour']=None
     df_test['hour']=pd.DatetimeIndex(df_test['Date']).hour
     
-    data=df[['Date', 'Src_IP', 'Dst_IP']]
+    data=df_train[['Date', 'Src_IP', 'Dst_IP']]
     #melt 
     data_series=data
     data_series=pd.melt(data_series, id_vars=['Date'])
@@ -49,7 +49,6 @@ def hourly_step_test_apriori_output(df_train, df_test, percentile, apps_server):
     hours=[]
 
     for i in data_groups:    
-        data_l=list(i['pairs'])
         pairs_count=(i.groupby('pairs2').agg({'Date':'count', 'norm_latency': 'mean', 'Duration': 'sum', 'Packets':'sum'}).reset_index())
         pairs_count.columns=['pairs','frequency', 'avg_norm_latency', 'total_duration', 'total_packets']
         pairs_count['norm_latency']=(pairs_count['total_duration']/pairs_count['total_packets'].sum())*100 #sum of all duration time divided by sum of all packets transfered for that pair
