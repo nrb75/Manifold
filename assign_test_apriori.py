@@ -23,30 +23,28 @@ def assign_servers_output(df_train, df_test, percentile, apps_server):
     df_train['hour']=None
     df_train['hour']=pd.DatetimeIndex(df_train['Date']).hour
 
-      
     #data_l=list(df_train['pairs'])
     pairs_count=(df_train.groupby('pairs2').agg({'Date':'count', 'norm_latency': 'mean', 'Duration': 'sum', 'Packets':'sum'}).reset_index())
     pairs_count.columns=['pairs','frequency', 'avg_norm_latency', 'total_duration', 'total_packets']
     pairs_count['norm_latency']=(pairs_count['total_duration']/pairs_count['total_packets'].sum())*100 #sum of all duration time divided by sum of all packets transfered for that pair       
     per_n=(pairs_count['frequency'].quantile(percentile))
 
-    data=df_train[['hour', 'Src_IP', 'Dst_IP']]
+    data=df_train[['Date', 'Src_IP', 'Dst_IP']]
     #melt 
     data_series=data
-    data_series=pd.melt(data_series, id_vars=['hour'])
+    data_series=pd.melt(data_series, id_vars=['Date'])
     #data_series['hour']=None
     #data_series['hour']=pd.DatetimeIndex(data_series['Date']).hour
     #data_series=data_series.drop('variable', axis=1)
-    data_series=data_series[['hour', 'value']]
-    data_series.columns=['hour', 'IP']
-    data_series = data_series.set_index('hour')['IP'].rename('IP')
+    data_series=data_series[['Date', 'value']]
+    data_series.columns=['Date', 'IP']
+    data_series = data_series.set_index('Date')['IP'].rename('IP')
     
     rules_list=[]
     min_support=per_n/len(df_train) #wants this as a percentage
     rules = association_rules(data_series, min_support)  
     rules_list.append(rules)
        
-    
     #format the rules, bring back in the other info on latency rank
 
     formated_rules=format_rules_apriori(rules, df_train, apps_server)
