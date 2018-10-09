@@ -14,7 +14,7 @@ from iter_apriori import merge_item_name
 from itertools import combinations, groupby
 from collections import Counter
 
-def association_rules(order_item, min_support):
+def association_rules(order_item, min_support, min_confidence):
 
     print("Starting order_item: {:22d}".format(len(order_item)))
 
@@ -71,6 +71,8 @@ def association_rules(order_item, min_support):
     item_pairs['confidenceBtoA'] = item_pairs['supportAB'] / item_pairs['supportB']
     item_pairs['lift']           = item_pairs['supportAB'] / (item_pairs['supportA'] * item_pairs['supportB'])
     
+    #filter rules that are below minimum confidence set by user
     
+    item_pairs                   = item_pairs[item_pairs['confidenceAtoB'] >= min_confidence]
     # Return association rules sorted by lift in descending order
     return item_pairs.sort_values('lift', ascending=False)
