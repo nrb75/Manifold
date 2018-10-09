@@ -19,7 +19,7 @@ from format_rules_apriori import format_rules_apriori
 #df=pd.read_csv('/home/natalie/Documents/Manifold/df_test.csv')
 
 
-def assign_servers_output(df_train, df_test, percentile, apps_server):
+def assign_servers_output(df_train, df_test, percentile, confidence, apps_server):
     df_train['hour']=None
     df_train['hour']=pd.DatetimeIndex(df_train['Date']).hour
 
@@ -41,7 +41,7 @@ def assign_servers_output(df_train, df_test, percentile, apps_server):
     data_series = data_series.set_index('Date')['IP'].rename('IP')
     
     min_support=per_n/len(df_train) #wants this as a percentage
-    rules = association_rules(data_series, min_support)  
+    rules = association_rules(data_series, min_support, min_confidence=confidence)  
      
     #format the rules, bring back in the other info on latency rank
 
